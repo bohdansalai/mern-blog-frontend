@@ -3,11 +3,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
 import axios from "../axios";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchTags } from "../redux/slices/posts";
 
 export const Home = () => {
