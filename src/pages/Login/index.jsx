@@ -29,7 +29,7 @@ export const Login = () => {
   const onSubmit = async (values) => {
     const data = await dispatch(fetchAuth(values));
 
-    if (!data.payload) return "Error occured while logging in";
+    if (!data.payload) return alert("Error occured while logging in");
 
     if ("token" in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
@@ -65,7 +65,13 @@ export const Login = () => {
           {...register("password", { required: "Wpisz swoje hasło" })}
           fullWidth
         />
-        <Button type="submit" size="large" variant="contained" fullWidth>
+        <Button
+          disabled={!isValid}
+          type="submit"
+          size="large"
+          variant="contained"
+          fullWidth
+        >
           Войти
         </Button>
       </form>
