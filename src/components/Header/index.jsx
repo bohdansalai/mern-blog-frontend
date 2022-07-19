@@ -26,24 +26,24 @@ export const Header = () => {
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to="/posts/create">
-                  <Button variant="contained">Написать статью</Button>
+                <Link to="/add-post">
+                  <Button variant="contained">Dodaj artykuł</Button>
                 </Link>
                 <Button
                   onClick={onClickLogout}
                   variant="contained"
                   color="error"
                 >
-                  Выйти
+                  Wyloguj
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outlined">Войти</Button>
+                  <Button variant="outlined">Zaloguj</Button>
                 </Link>
                 <Link to="/register">
-                  <Button variant="contained">Создать аккаунт</Button>
+                  <Button variant="contained">Rejestracja</Button>
                 </Link>
               </>
             )}
