@@ -50,7 +50,7 @@ export const AddPost = () => {
       const fields = {
         title,
         imageUrl,
-        tags,
+        tags: tags.split(","),
         text,
       };
 
@@ -82,8 +82,6 @@ export const AddPost = () => {
   if (!window.localStorage.getItem("token") && !isAuth) {
     return <Navigate to="/" />;
   }
-
-  console.log(title, tags, text);
 
   return (
     <Paper style={{ padding: 30 }}>
