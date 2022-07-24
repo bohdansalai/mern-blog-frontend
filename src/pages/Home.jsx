@@ -41,17 +41,21 @@ export const Home = () => {
             isPostsLoading ? (
               <Post key={index} isLoading={true} />
             ) : (
-              <Post
-                id={obj._id}
-                title={obj.title}
-                user={obj.user}
-                imageUrl={`http://localhost:4444${obj.imageUrl}`}
-                createdAt={obj.createdAt}
-                viewsCount={obj.viewsCount}
-                commentsCount={3}
-                tags={obj.tags}
-                isEditable={userData?._id === obj.user._id}
-              />
+              <>
+                <Post
+                  id={obj._id}
+                  title={obj.title}
+                  user={obj.user}
+                  imageUrl={
+                    obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ""
+                  }
+                  createdAt={obj.createdAt}
+                  viewsCount={obj.viewsCount}
+                  commentsCount={3}
+                  tags={obj.tags}
+                  isEditable={userData?._id === obj.user._id}
+                />
+              </>
             )
           )}
         </Grid>
