@@ -8,11 +8,12 @@ import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 import { selectIsAuth } from "../../redux/slices/auth";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import axios from "../../axios";
 
 export const AddPost = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -21,6 +22,8 @@ export const AddPost = () => {
   const [title, setTitle] = React.useState("");
   const [tags, setTags] = React.useState("");
   const inputFileRef = React.useRef(null);
+
+  const isEditing = Boolean(id);
 
   const onClickRemoveImage = () => {
     setImageUrl("");
@@ -39,8 +42,8 @@ export const AddPost = () => {
     }
   };
 
-  const onChange = React.useCallback((text) => {
-    setText(text);
+  const onChange = React.useCallback((value) => {
+    setText(value);
   }, []);
 
   const onSubmit = async () => {
@@ -54,22 +57,41 @@ export const AddPost = () => {
         text,
       };
 
-      const { data } = await axios.post("/posts", fields);
+      const { data } = isEditing
+        ? await axios.patch(`/posts/${id}`, fields)
+        : await axios.post("/posts", fields);
 
-      const id = data._id;
+      const _id = isEditing ? id : data._id;
 
-      navigate(`/posts/${id}`);
+      navigate(`/posts/${_id}`);
     } catch (err) {
       console.warn(err);
     }
   };
+
+  React.useEffect(() => {
+    if (id) {
+      axios
+        .get(`/posts/${id}`)
+        .then(({ data }) => {
+          setTitle(data.title);
+          setText(data.text);
+          setImageUrl(data.imageUrl);
+          setTags(data.tags.join(","));
+        })
+        .catch((err) => {
+          console.warn(err);
+          alert("Error getting loading the file");
+        });
+    }
+  });
 
   const options = React.useMemo(
     () => ({
       spellChecker: false,
       maxHeight: "400px",
       autofocus: true,
-      placeholder: "Введите текст...",
+      placeholder: "Input text...",
       status: false,
       autosave: {
         enabled: true,
@@ -141,7 +163,7 @@ export const AddPost = () => {
       />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained">
-          Wyślij
+          {isEditing ? "Zapisz zmiany" : "Wyślij"}
         </Button>
         <a href="/">
           <Button size="large">Wróc</Button>
